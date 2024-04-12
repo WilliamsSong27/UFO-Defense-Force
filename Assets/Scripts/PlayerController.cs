@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float xRange = 15;
     public Transform blaster;
     public GameObject lazer;
+    public bool hasPowerup;
 
 
     // Update is called once per frame
@@ -37,9 +38,21 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    //Delete any object with a trigger that hits the player
+
+    //Powerup Coding and delete any object that hits the player.
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        if (other.CompareTag("Powerup"))
+        {
+            hasPowerup = true;
+            Destroy(other.gameObject);
+            StartCoroutine(PowerupCountdownRoutine());
+        }
+    }
+
+    IEnumerator PowerupCountdownRoutine()
+    {
+        yield return new WaitForSeconds(7);
+        hasPowerup = false;
     }
 }
